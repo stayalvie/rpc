@@ -1,0 +1,6 @@
+# Project exclude paths
+/example-client/target/
+/example-server01/target/
+/Hello-service-api/target/
+/rpc-common/target/
+/rpc-simple/target/
