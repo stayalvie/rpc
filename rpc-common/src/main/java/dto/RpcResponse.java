@@ -1,7 +1,7 @@
 package dto;
 
 import enumration.RpcResponseCode;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -9,7 +9,12 @@ import java.io.Serializable;
  * @author xiaofei
  * @create 2021-09-17 17:39
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString
 public class RpcResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 715745410605631233L;

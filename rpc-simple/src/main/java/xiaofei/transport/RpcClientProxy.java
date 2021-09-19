@@ -1,9 +1,10 @@
-package xiaofei;
+package xiaofei.transport;
 
 
 import dto.RpcRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xiaofei.transport.Socket.SocketRpcClient;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -15,12 +16,10 @@ import java.lang.reflect.Proxy;
  */
 public class RpcClientProxy implements InvocationHandler {
     private static final Logger logger = LoggerFactory.getLogger(RpcClientProxy.class);
-    private String host;
-    private int port;
+    private RpcClient rpcClient;
 
-    public RpcClientProxy(String host, int port) {
-        this.host = host;
-        this.port = port;
+    public RpcClientProxy(RpcClient rpcClient) {
+        this.rpcClient = rpcClient;
     }
 
     @SuppressWarnings("unchecked")
@@ -36,7 +35,6 @@ public class RpcClientProxy implements InvocationHandler {
                 .interfaceName(method.getDeclaringClass().getName())
                 .paramTypes(method.getParameterTypes())
                 .build();
-        RpcClient rpcClient = new RpcClient();
-        return rpcClient.sendRpcRequest(rpcRequest, host, port);
+        return rpcClient.sendRpcRequest(rpcRequest);
     }
 }

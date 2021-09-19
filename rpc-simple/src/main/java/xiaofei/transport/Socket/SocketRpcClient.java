@@ -1,4 +1,4 @@
-package xiaofei;
+package xiaofei.transport.Socket;
 
 
 import dto.RpcRequest;
@@ -8,6 +8,7 @@ import enumration.RpcResponseCode;
 import exception.RpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xiaofei.transport.RpcClient;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,10 +19,12 @@ import java.net.Socket;
  * @author xiaofei
  * @createTime 2021年09月17日 18:01:00
  */
-public class RpcClient {
-    public static final Logger logger = LoggerFactory.getLogger(RpcClient.class);
+public class SocketRpcClient implements RpcClient {
+    public static final Logger logger = LoggerFactory.getLogger(SocketRpcClient.class);
+    private String host;
+    private int port;
 
-    public Object sendRpcRequest(RpcRequest rpcRequest, String host, int port) {
+    public Object sendRpcRequest(RpcRequest rpcRequest) {
         try (Socket socket = new Socket(host, port)) {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             objectOutputStream.writeObject(rpcRequest);

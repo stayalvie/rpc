@@ -1,10 +1,11 @@
 package server;
 
-import service.HelloService;
 import service.impl.HelloServiceImpl;
-import xiaofei.RpcServer;
+import xiaofei.transport.Socket.SocketRpcServer;
 import xiaofei.register.DefaultServiceRegister;
 import xiaofei.register.ServiceRegistry;
+import xiaofei.transport.netty.NettyRpcRequestHandler;
+import xiaofei.transport.netty.NettyRpcServer;
 
 /**
  * @author xiaofei
@@ -16,8 +17,8 @@ public class ExampleServer {
         ServiceRegistry registry = new DefaultServiceRegister();
         //注册service, 目前不支持一个接口两个实现类
         registry.register(new HelloServiceImpl());
-        RpcServer rpcServer = new RpcServer(registry);
-        rpcServer.start(9999);
+        NettyRpcServer rpcServer = new NettyRpcServer(9999, registry);
+        rpcServer.start();
     }
 
 }

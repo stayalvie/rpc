@@ -15,13 +15,14 @@
         <!--logging-->
         <log4j.version>2.9.0</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
-    </properties>
+        <kryo.version>4.0.2</kryo.version>
+        <netty.version>4.1.39.Final</netty.version>
+     </properties>
     <modules>
         <module>rpc-common</module>
         <module>rpc-core</module>
         <module>rpc-simple</module>
         <module>example-client</module>
-        <module>example-server</module>
         <module>Hello-service-api</module>
         <module>example-server01</module>
     </modules>

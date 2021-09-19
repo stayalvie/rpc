@@ -1,4 +1,4 @@
-package xiaofei;
+package xiaofei.transport.Socket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import java.util.concurrent.*;
  * @author xiaofei
  * @createTime 2021年09月17日 18:01:00
  */
-public class RpcServer {
+public class SocketRpcServer {
     /**
      * 线程池参数 TODO 这个线程池的参数可以又给配置
      */
@@ -24,10 +24,10 @@ public class RpcServer {
     private static final int BLOCKING_QUEUE_CAPACITY = 100;
     private ExecutorService threadPool;
     private RpcRequestHandler rpcRequestHandler = new RpcRequestHandler();
-    private static final Logger logger = LoggerFactory.getLogger(RpcServer.class);
+    private static final Logger logger = LoggerFactory.getLogger(SocketRpcServer.class);
     private final ServiceRegistry serviceRegistry;
 
-    public RpcServer(ServiceRegistry serviceRegistry) {
+    public SocketRpcServer(ServiceRegistry serviceRegistry) {
         this.serviceRegistry = serviceRegistry;
         BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(BLOCKING_QUEUE_CAPACITY);
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
