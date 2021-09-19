@@ -1,5 +1,6 @@
 package xiaofei.transport.netty;
 
+import dto.RpcMessageChecker;
 import dto.RpcRequest;
 import dto.RpcResponse;
 import io.netty.bootstrap.Bootstrap;
@@ -76,6 +77,8 @@ public class NettyRpcClient implements RpcClient {
                 }).sync();
                 AttributeKey<RpcResponse> key = AttributeKey.valueOf("rpcResponse");
                 RpcResponse rpcResponse = futureChannel.attr(key).get();
+                //检查requestId
+                RpcMessageChecker.check(rpcResponse, rpcRequest);
                 return rpcResponse.getData();
             }
         } catch (InterruptedException e) {

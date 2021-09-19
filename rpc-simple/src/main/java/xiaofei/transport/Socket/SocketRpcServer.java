@@ -2,6 +2,7 @@ package xiaofei.transport.Socket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.ThreadPoolFactory;
 import xiaofei.handler.RpcRequestHandler;
 import xiaofei.register.ServiceRegistry;
 
@@ -15,23 +16,17 @@ import java.util.concurrent.*;
  * @createTime 2021年09月17日 18:01:00
  */
 public class SocketRpcServer {
-    /**
-     * 线程池参数 TODO 这个线程池的参数可以又给配置
-     */
-    private static final int CORE_POOL_SIZE = 10;
-    private static final int MAXIMUM_POOL_SIZE_SIZE = 100;
-    private static final int KEEP_ALIVE_TIME = 1;
-    private static final int BLOCKING_QUEUE_CAPACITY = 100;
-    private ExecutorService threadPool;
+    private static ExecutorService threadPool;
     private RpcRequestHandler rpcRequestHandler = new RpcRequestHandler();
     private static final Logger logger = LoggerFactory.getLogger(SocketRpcServer.class);
     private final ServiceRegistry serviceRegistry;
 
+    static {
+        threadPool = ThreadPoolFactory.createDefaultThreadPool("socket-server");
+    }
+
     public SocketRpcServer(ServiceRegistry serviceRegistry) {
         this.serviceRegistry = serviceRegistry;
-        BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(BLOCKING_QUEUE_CAPACITY);
-        ThreadFactory threadFactory = Executors.defaultThreadFactory();
-        this.threadPool = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE_SIZE, KEEP_ALIVE_TIME, TimeUnit.MINUTES, workQueue, threadFactory);
     }
 
 

@@ -4,6 +4,7 @@ package xiaofei.transport;
 import dto.RpcRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.UUIDGenerator;
 import xiaofei.transport.Socket.SocketRpcClient;
 
 import java.lang.reflect.InvocationHandler;
@@ -31,6 +32,7 @@ public class RpcClientProxy implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) {
         logger.info("Call invoke method and invoked method: {}", method.getName());
         RpcRequest rpcRequest = RpcRequest.builder().methodName(method.getName())
+                .requestId(UUIDGenerator.UUID_Generator())
                 .parameters(args)
                 .interfaceName(method.getDeclaringClass().getName())
                 .paramTypes(method.getParameterTypes())
