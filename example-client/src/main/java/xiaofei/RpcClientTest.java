@@ -2,8 +2,12 @@ package xiaofei;
 
 import service.Hello;
 import service.HelloService;
+import xiaofei.transport.ClientTransport;
 import xiaofei.transport.RpcClientProxy;
-import xiaofei.transport.netty.NettyRpcClient;
+import xiaofei.transport.netty.client.NettyRpcClient;
+import xiaofei.transport.netty.client.RpcClientManager;
+
+import java.net.InetSocketAddress;
 
 /**
  * @author xiaofei
@@ -13,9 +17,14 @@ public class RpcClientTest {
 
     public static void main(String[] args) {
 
-        RpcClientProxy rpcClientProxy = new RpcClientProxy(new NettyRpcClient("127.0.0.1", 9999));
+        ClientTransport rpcClient = new RpcClientManager();
+        RpcClientProxy rpcClientProxy = new RpcClientProxy(rpcClient);
         HelloService helloService = rpcClientProxy.getProxy(HelloService.class);
         String hello = helloService.hello(new Hello("111", "222"));
+        System.out.println(hello);
+        hello = helloService.hello(new Hello("111", "222"));
+        System.out.println(hello);
+        System.out.println(helloService.hello(new Hello("111", "222")));
         System.out.println(hello);
     }
 }

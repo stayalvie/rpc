@@ -5,7 +5,6 @@ import dto.RpcRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.UUIDGenerator;
-import xiaofei.transport.Socket.SocketRpcClient;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -17,9 +16,9 @@ import java.lang.reflect.Proxy;
  */
 public class RpcClientProxy implements InvocationHandler {
     private static final Logger logger = LoggerFactory.getLogger(RpcClientProxy.class);
-    private RpcClient rpcClient;
+    private ClientTransport rpcClient;
 
-    public RpcClientProxy(RpcClient rpcClient) {
+    public RpcClientProxy(ClientTransport rpcClient) {
         this.rpcClient = rpcClient;
     }
 

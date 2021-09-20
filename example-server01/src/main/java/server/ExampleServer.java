@@ -1,11 +1,12 @@
 package server;
 
+import service.HelloService;
 import service.impl.HelloServiceImpl;
-import xiaofei.transport.Socket.SocketRpcServer;
-import xiaofei.register.DefaultServiceRegister;
 import xiaofei.register.ServiceRegistry;
-import xiaofei.transport.netty.NettyRpcRequestHandler;
-import xiaofei.transport.netty.NettyRpcServer;
+import xiaofei.register.ZkServiceRegistry;
+import xiaofei.transport.netty.server.NettyRpcServer;
+
+import java.net.InetSocketAddress;
 
 /**
  * @author xiaofei
@@ -14,10 +15,9 @@ import xiaofei.transport.netty.NettyRpcServer;
 public class ExampleServer {
 
     public static void main(String[] args) {
-        ServiceRegistry registry = new DefaultServiceRegister();
-        //注册service, 目前不支持一个接口两个实现类
-        registry.register(new HelloServiceImpl());
-        NettyRpcServer rpcServer = new NettyRpcServer(9999, registry);
+
+        NettyRpcServer rpcServer = new NettyRpcServer("127.0.0.1", 9999);
+        rpcServer.publishService(new HelloServiceImpl(), HelloService.class);
         rpcServer.start();
     }
 

@@ -35,9 +35,7 @@ public class RpcMessageHandlerRunnable implements Runnable {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
             RpcRequest rpcRequest = (RpcRequest) objectInputStream.readObject();
-            System.out.println(rpcRequest.getMethodName());
-            Object service = serviceRegistry.getService(rpcRequest.getInterfaceName());
-            Object result = requestHandler.handler(rpcRequest, service);
+            Object result = requestHandler.handler(rpcRequest);
             objectOutputStream.writeObject(RpcResponse.success(result, rpcRequest.getRequestId()));
             objectOutputStream.flush();
         } catch (IOException | ClassNotFoundException e) {

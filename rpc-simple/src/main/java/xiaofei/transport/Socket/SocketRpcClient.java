@@ -8,7 +8,7 @@ import enumration.RpcResponseCode;
 import exception.RpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xiaofei.transport.RpcClient;
+import xiaofei.transport.ClientTransport;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,7 +19,7 @@ import java.net.Socket;
  * @author xiaofei
  * @createTime 2021年09月17日 18:01:00
  */
-public class SocketRpcClient implements RpcClient {
+public class SocketRpcClient implements ClientTransport {
     public static final Logger logger = LoggerFactory.getLogger(SocketRpcClient.class);
     private String host;
     private int port;
