@@ -16,7 +16,6 @@ import java.net.InetSocketAddress;
 public class RpcClientTest {
 
     public static void main(String[] args) {
-
         ClientTransport rpcClient = new RpcClientManager();
         RpcClientProxy rpcClientProxy = new RpcClientProxy(rpcClient);
         HelloService helloService = rpcClientProxy.getProxy(HelloService.class);

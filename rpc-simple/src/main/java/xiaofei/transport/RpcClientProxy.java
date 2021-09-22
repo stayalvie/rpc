@@ -2,13 +2,19 @@ package xiaofei.transport;
 
 
 import dto.RpcRequest;
+import dto.RpcResponse;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.UUIDGenerator;
+import xiaofei.transport.Socket.SocketRpcClient;
+import xiaofei.transport.netty.client.RpcClientManager;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author xiaofei
@@ -27,15 +33,26 @@ public class RpcClientProxy implements InvocationHandler {
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]{clazz}, this);
     }
 
+    @SneakyThrows
+    @SuppressWarnings("unchecked")
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
         logger.info("Call invoke method and invoked method: {}", method.getName());
         RpcRequest rpcRequest = RpcRequest.builder().methodName(method.getName())
-                .requestId(UUIDGenerator.UUID_Generator())
                 .parameters(args)
                 .interfaceName(method.getDeclaringClass().getName())
                 .paramTypes(method.getParameterTypes())
+                .requestId(UUID.randomUUID().toString())
                 .build();
-        return rpcClient.sendRpcRequest(rpcRequest);
+        Object result = null;
+        if (rpcClient instanceof RpcClientManager) {
+            CompletableFuture<RpcResponse> completableFuture = (CompletableFuture<RpcResponse>) rpcClient.sendRpcRequest(rpcRequest);
+            result = completableFuture.get().getData();
+        }
+        if (rpcClient instanceof SocketRpcClient) {
+            RpcResponse rpcResponse = (RpcResponse) rpcClient.sendRpcRequest(rpcRequest);
+            result = rpcResponse.getData();
+        }
+        return result;
     }
 }

@@ -2,6 +2,8 @@ package xiaofei.transport.netty.client;
 
 import dto.RpcRequest;
 import dto.RpcResponse;
+import enumration.RpcErrorMessageEnum;
+import exception.RpcException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -13,6 +15,9 @@ import xiaofei.serializer.impl.KryoSerializer;
 import xiaofei.transport.codc.kryo.NettyKryoDecoder;
 import xiaofei.transport.codc.kryo.NettyKryoEncoder;
 import xiaofei.transport.netty.NettyRpcResponseHandler;
+
+import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author xiaofei
@@ -44,12 +49,21 @@ public class NettyRpcClient{
                 });
     }
 
-    public static Bootstrap getBootStrap() {
-        return b;
-    }
-
     public static void close() {
         logger.info("call close method");
         eventLoopGroup.shutdownGracefully();
+    }
+
+    public Channel doConnect(InetSocketAddress inetSocketAddress) {
+        ChannelFuture future = null;
+        try {
+            future = b.connect(inetSocketAddress).sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (future == null) {
+            new RpcException(RpcErrorMessageEnum.SERVER_CONNECT_FAIL);
+        }
+        return future.channel();
     }
 }

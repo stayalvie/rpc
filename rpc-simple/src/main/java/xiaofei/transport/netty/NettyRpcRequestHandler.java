@@ -10,12 +10,12 @@ import io.netty.util.ReferenceCountUtil;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.ThreadPoolFactory;
+import utils.threadPoolMannger.CustomThreadPoolConfig;
+import utils.threadPoolMannger.ThreadPoolFactory;
 import xiaofei.handler.RpcRequestHandler;
 import xiaofei.register.ServiceRegistry;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadFactory;
 
 
 /**
@@ -32,7 +32,9 @@ public class NettyRpcRequestHandler extends ChannelInboundHandlerAdapter {
     private static ExecutorService threadPool;
 
     static {
-        threadPool = ThreadPoolFactory.createDefaultThreadPool("netty-rpc-handler-response");
+        CustomThreadPoolConfig customThreadPoolConfig = new CustomThreadPoolConfig();
+        customThreadPoolConfig.setCorePoolSize(6);
+        threadPool = ThreadPoolFactory.createCustomThreadPoolIfAbsent("netty-rpc-handler-response", customThreadPoolConfig);
     }
 
     /*

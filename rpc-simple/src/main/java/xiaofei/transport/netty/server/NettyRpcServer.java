@@ -14,6 +14,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xiaofei.Config.CustomShutdownHook;
 import xiaofei.provider.ServiceProvider;
 import xiaofei.provider.impl.ServiceProviderImpl;
 import xiaofei.register.ServiceRegistry;
@@ -78,7 +79,8 @@ public class NettyRpcServer {
                     .option(ChannelOption.SO_KEEPALIVE, true);
 
             // 绑定端口，同步等待绑定成功
-            ChannelFuture f = b.bind(port).sync();
+            ChannelFuture f = b.bind(host, port).sync();
+            CustomShutdownHook.getCustomShutdownHook().clearAll();
             // 等待服务端监听端口关闭
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
@@ -88,6 +90,8 @@ public class NettyRpcServer {
             workerGroup.shutdownGracefully();
         }
     }
+
+
 
 
 }

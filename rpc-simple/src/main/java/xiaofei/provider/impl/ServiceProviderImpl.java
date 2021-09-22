@@ -21,7 +21,7 @@ public class ServiceProviderImpl implements ServiceProvider {
     private static final Logger logger = LoggerFactory.getLogger(ServiceProviderImpl.class);
 
     /*
-     * 服务注册的中心 目前是单机所以用map TODO 目前不支持一个接口多个实现, map的key不能
+     * 服务注册的中心 TODO 目前不支持一个接口多个实现, map的key不能
      *
      * key  : 接口的名称
      * value: 实际的接口实现

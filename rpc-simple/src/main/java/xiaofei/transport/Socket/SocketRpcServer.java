@@ -2,7 +2,7 @@ package xiaofei.transport.Socket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.ThreadPoolFactory;
+import utils.threadPoolMannger.ThreadPoolFactory;
 import xiaofei.handler.RpcRequestHandler;
 import xiaofei.register.ServiceRegistry;
 
@@ -22,12 +22,13 @@ public class SocketRpcServer {
     private final ServiceRegistry serviceRegistry;
 
     static {
-        threadPool = ThreadPoolFactory.createDefaultThreadPool("socket-server");
+        threadPool = ThreadPoolFactory.createCustomThreadPoolIfAbsent("socket-server");
     }
 
     public SocketRpcServer(ServiceRegistry serviceRegistry) {
         this.serviceRegistry = serviceRegistry;
     }
+
 
 
     /**
